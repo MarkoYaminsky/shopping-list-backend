@@ -1,0 +1,14 @@
+# IDE
+.idea/
+
+# MacOS
+.DS_Store
+
+# Hooks folders
+.mypy_cache/
+
+# Docker related
+db/
+
+# Env
+.env

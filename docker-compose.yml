@@ -1,0 +1,29 @@
+version: '3'
+services:
+  backend:
+    environment:
+      SECRET_KEY: ${SECRET_KEY}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+    build: ./reminder_backend
+    container_name: reminder-backend
+    ports:
+      - "8001:8000"
+    volumes:
+      - "./reminder_backend/app:/opt/app"
+      - "./reminder_backend/requirements.txt:/opt/requirements.txt"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    container_name: reminder-db
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - "./db:/var/lib/postgresql/data"
+    ports:
+      - "5433:5432"
