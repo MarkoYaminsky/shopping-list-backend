@@ -9,3 +9,6 @@ launch-docker:
 
 launch-docker-build:
 	bash docker-launch.sh build
+
+migrate:
+	docker exec -it reminder-backend python manage.py migrate

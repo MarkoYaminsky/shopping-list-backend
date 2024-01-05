@@ -11,8 +11,8 @@ services:
     ports:
       - "8001:8000"
     volumes:
-      - "./reminder_backend/app:/opt/app"
-      - "./reminder_backend/requirements.txt:/opt/requirements.txt"
+      - "./reminder_backend/app:/reminder_backend/app"
+      - "./reminder_backend/requirements.txt:/reminder_backend/requirements.txt"
     depends_on:
       - db
 
