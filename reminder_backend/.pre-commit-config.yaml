@@ -24,4 +24,3 @@ repos:
     hooks:
       - id: flake8
         args: [ '--config=reminder_backend/setup.cfg' ]
-        additional_dependencies: [ flake8-isort ]

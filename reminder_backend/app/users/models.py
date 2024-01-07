@@ -9,14 +9,21 @@ class UserManager(BaseUserManager):
     def create_superuser(self, username: str, password: str) -> "User":
         from app.users.services import create_user
 
-        return create_user(username=username, password=password)
+        return create_user(username=username, password=password, is_staff=True, is_superuser=True)
 
 
 class User(BaseModel, AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=30, unique=True)
-    phone_number = PhoneNumberField(region="UA", unique=True, null=True)
     is_staff = models.BooleanField(default=False)
 
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ("password",)
     objects = UserManager()
+
+
+class Profile(BaseModel):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    display_name = models.CharField(max_length=30, blank=True)
+    gender = models.CharField(max_length=20, blank=True)
+    status = models.CharField(max_length=128, blank=True)
+    phone_number = PhoneNumberField(region="UA", unique=True, blank=True)

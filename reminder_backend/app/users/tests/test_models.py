@@ -15,3 +15,5 @@ class TestUserManagerModel:
 
         assert user.username == self.username
         assert user.check_password(self.password) is True
+        assert user.is_staff is True
+        assert user.is_superuser is True
