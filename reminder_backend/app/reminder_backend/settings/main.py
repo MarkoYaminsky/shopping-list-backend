@@ -2,7 +2,7 @@ from .base import *
 
 SECRET_KEY = env.str("SECRET_KEY")
 
-ALLOWED_HOSTS: list[str] = []
+ALLOWED_HOSTS = ["10.0.2.2"]
 
 WSGI_APPLICATION = "app.reminder_backend.wsgi.application"
 

@@ -7,4 +7,6 @@ WORKDIR /reminder_backend/
 
 RUN pip install -r requirements.txt
 
-CMD python -u manage.py migrate && python manage.py runserver 0.0.0.0:8000
+ENV PYTHONUNBUFFERED=1
+
+CMD python manage.py migrate && python manage.py runserver 0.0.0.0:8000
