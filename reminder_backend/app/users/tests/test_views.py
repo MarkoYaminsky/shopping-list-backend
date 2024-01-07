@@ -3,6 +3,7 @@ from app.users.tests.factories import ProfileFactory, UserFactory
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from rest_framework import status
+from rest_framework.authtoken.models import Token
 
 pytestmark = pytest.mark.django_db
 
@@ -61,3 +62,19 @@ class TestUserRegistrationAPI:
         assert user.username == self.username
         assert user.check_password(self.password) is True
         assert user.profile.display_name == self.display_name
+
+
+class TestUserLoginAPI:
+    ROUTE = "users:user-login"
+    password = "11111"
+
+    def test_success(self, api_client):
+        user = UserFactory()
+        token = Token.objects.create(user=user).key
+        user.set_password(self.password)
+        user.save()
+
+        response = api_client.post(reverse(self.ROUTE), data={"username": user.username, "password": self.password})
+
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json() == {"token": token}

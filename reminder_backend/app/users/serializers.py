@@ -25,3 +25,12 @@ class UserRegistrationInputSerializer(serializers.Serializer):
     def validate_phone_number(self, phone_number: str) -> None:
         if phone_number is not None and get_user_by_phone_number(phone_number) is not None:
             raise UserWithPhoneNumberAlreadyExistsError(phone_number)
+
+
+class UserLoginInputSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
+
+
+class UserLoginOutputSerializer(serializers.Serializer):
+    token = serializers.CharField()

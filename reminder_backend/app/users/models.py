@@ -1,8 +1,11 @@
+from typing import Optional
+
 from app.common.models import BaseModel
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
+from rest_framework.authtoken.models import Token
 
 
 class UserManager(BaseUserManager):
@@ -19,6 +22,10 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ("password",)
     objects = UserManager()
+
+    @property
+    def token(self) -> Optional[Token]:
+        return getattr(self, "auth_token", None)
 
 
 class Profile(BaseModel):

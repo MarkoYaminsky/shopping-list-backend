@@ -6,10 +6,12 @@ from faker import Faker
 
 fake = Faker()
 
+User = get_user_model()
+
 
 class UserFactory(DjangoModelFactory):
     class Meta:
-        model = get_user_model()
+        model = User
 
     username = Sequence(lambda x: f"{fake.user_name()}{x}")
     password = "sashko"

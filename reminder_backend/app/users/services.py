@@ -1,6 +1,8 @@
+from app.users.exceptions import InvadlidCredentialsError, NoAuthTokenError
 from app.users.models import Profile
 from django.contrib.auth import get_user_model
 from django.db.models import QuerySet
+from rest_framework.authtoken.models import Token
 
 User = get_user_model()
 
@@ -18,9 +20,23 @@ def create_user(username: str, password: str, **kwargs) -> User:
 
 def register_user(username: str, password: str, **kwargs) -> User:
     user = create_user(username=username, password=password)
+    Token.objects.create(user=user)
     profile = Profile.objects.create(user=user, **kwargs)
     return profile
 
 
 def get_user_by_phone_number(phone_number: str) -> User:
     return get_all_users(profile__phone_number=phone_number).first()
+
+
+def get_user_token(username: str, password: str) -> dict:
+    user = get_all_users(username=username).first()
+
+    if not user.check_password(password):
+        raise InvadlidCredentialsError
+
+    user_token = user.token
+    if user_token is None:
+        raise NoAuthTokenError(username)
+
+    return {"token": user_token.key}

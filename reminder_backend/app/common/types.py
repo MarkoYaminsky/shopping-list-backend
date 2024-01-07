@@ -31,12 +31,4 @@ class SerializersWithBody(NamedTuple):
     response_status: str = status.HTTP_204_NO_CONTENT
 
 
-class APISerializers(NamedTuple):
-    get: SerializersWithoutBody = None
-    post: SerializersWithBody = None
-    put: SerializersWithBody = None
-    delete: SerializersWithBody = None
-    patch: SerializersWithBody = None
-
-
 SerializerGroup = SerializersWithoutBody | SerializersWithBody
