@@ -33,4 +33,4 @@ class Profile(BaseModel):
     display_name = models.CharField(max_length=30, blank=True)
     gender = models.CharField(max_length=20, blank=True)
     status = models.CharField(max_length=128, blank=True)
-    phone_number = PhoneNumberField(region="UA", unique=True, blank=True)
+    phone_number = PhoneNumberField(region="UA", unique=True, blank=True, null=True, default=None)
