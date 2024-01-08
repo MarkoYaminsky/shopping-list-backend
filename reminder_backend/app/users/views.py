@@ -1,18 +1,22 @@
-from app.common.types import RequestMethod, SerializersWithBody
-from app.common.views import PostAPIView, auto_extend_schema
+from app.common.types import RequestMethod, SerializersWithBody, SerializersWithoutBody
+from app.common.views import GetAPIView, PostAPIView, auto_extend_schema
 from app.users.serializers import (
+    UserFullProfileRetrieveOutputSerializer,
     UserLoginInputSerializer,
     UserLoginOutputSerializer,
     UserRegistrationCheckInputSerializer,
     UserRegistrationInputSerializer,
 )
 from app.users.services import get_user_token, register_user
+from django.contrib.auth import get_user_model
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+User = get_user_model()
 
 
 class UserRegistrationCheckAPI(APIView):
@@ -54,3 +58,18 @@ class UserLoginAPI(PostAPIView):
 
     def post(self, request: Request, *args, **kwargs) -> Response:
         return super().post(request, *args, **kwargs)
+
+
+@auto_extend_schema(http_method=RequestMethod.GET)
+class UserFullProfileRetrieveAPI(GetAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_classes = SerializersWithoutBody(
+        output=UserFullProfileRetrieveOutputSerializer,
+        response_status=status.HTTP_200_OK,
+    )
+
+    def get_object(self, *args, **kwargs) -> User:
+        return self.request.user
+
+    def get(self, request: Request, *args, **kwargs) -> Response:
+        return super().get(request, *args, **kwargs)

@@ -78,3 +78,22 @@ class TestUserLoginAPI:
 
         assert response.status_code == status.HTTP_200_OK
         assert response.json() == {"token": token}
+
+
+class TestUserFullProfileRetrieveAPI:
+    ROUTE = "users:my-profile-retrieve"
+
+    def test_success(self, authenticated_api_client, user):
+        ProfileFactory(user=user)
+
+        response = authenticated_api_client.get(reverse(self.ROUTE))
+
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json() == {
+            "id": str(user.id),
+            "username": user.username,
+            "display_name": user.profile.display_name,
+            "phone_number": user.profile.phone_number,
+            "gender": user.profile.gender,
+            "status": user.profile.status,
+        }

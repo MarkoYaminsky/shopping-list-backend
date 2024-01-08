@@ -34,3 +34,14 @@ class UserLoginInputSerializer(serializers.Serializer):
 
 class UserLoginOutputSerializer(serializers.Serializer):
     token = serializers.CharField()
+
+
+class UserFullProfileRetrieveOutputSerializer(serializers.ModelSerializer):
+    display_name = serializers.CharField(source="profile.display_name")
+    phone_number = serializers.CharField(source="profile.phone_number")
+    gender = serializers.CharField(source="profile.gender")
+    status = serializers.CharField(source="profile.status")
+
+    class Meta:
+        model = User
+        fields = ("id", "username", "display_name", "phone_number", "gender", "status")

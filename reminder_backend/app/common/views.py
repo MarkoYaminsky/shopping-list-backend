@@ -19,20 +19,20 @@ class BaseCustomAPIView(APIView, ABC):
     default_schema_config: dict
     request_method: RequestMethod
 
-
-class PostAPIView(BaseCustomAPIView):
-    """
-    Abstract class for most cases of post APIs.
-    """
-
-    request_method = RequestMethod.POST
-
     @abstractmethod
     def perform_action(self, *args, **kwargs) -> Any:
         """
         Main action of the API.
         """
         pass
+
+
+class PostAPIView(BaseCustomAPIView, ABC):
+    """
+    Abstract class for most cases of post APIs.
+    """
+
+    request_method = RequestMethod.POST
 
     def post(self, request: Request, *args, **kwargs) -> Response:
         post_serializers = self.serializer_classes
@@ -53,6 +53,29 @@ class PostAPIView(BaseCustomAPIView):
             return Response(output_serializer(result).data, status=response_status)
 
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class GetAPIView(BaseCustomAPIView, ABC):
+    """
+    Abstract class for most cases of get (retrieve) APIs.
+    """
+
+    request_method = RequestMethod.GET
+
+    @abstractmethod
+    def get_object(self, *args, **kwargs) -> Any:
+        pass
+
+    def perform_action(self, retrieved_object: Any, *args, **kwargs) -> Any:
+        return retrieved_object
+
+    def get(self, request: Request, *args, **kwargs) -> Response:
+        get_serializers = self.serializer_classes
+        output_serializer = get_serializers.output
+        response_status = get_serializers.response_status
+        retrieved_object = self.get_object(*args, **kwargs)
+        result = self.perform_action(retrieved_object)
+        return Response(output_serializer(result).data, status=response_status)
 
 
 def auto_extend_schema(http_method: RequestMethod) -> Any:

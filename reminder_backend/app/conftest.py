@@ -14,3 +14,9 @@ def api_client() -> APIClient:
 @pytest.fixture
 def user(db) -> User:
     return UserFactory()
+
+
+@pytest.fixture
+def authenticated_api_client(user, api_client) -> api_client:
+    api_client.force_authenticate(user)
+    return api_client
