@@ -1,4 +1,4 @@
-from app.common.types import RequestMethod, SerializersWithBody, SerializersWithoutBody
+from app.common.types import SerializersWithBody, SerializersWithoutBody
 from app.common.views import GetAPIView, PostAPIView, auto_extend_schema
 from app.users.serializers import (
     UserFullProfileRetrieveOutputSerializer,
@@ -30,7 +30,7 @@ class UserRegistrationCheckAPI(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@auto_extend_schema(http_method=RequestMethod.POST)
+@auto_extend_schema
 class UserRegistrationAPI(PostAPIView):
     permission_classes = (AllowAny,)
     serializer_classes = SerializersWithBody(
@@ -44,7 +44,7 @@ class UserRegistrationAPI(PostAPIView):
         return super().post(request, *args, **kwargs)
 
 
-@auto_extend_schema(http_method=RequestMethod.POST)
+@auto_extend_schema
 class UserLoginAPI(PostAPIView):
     permission_classes = (AllowAny,)
     serializer_classes = SerializersWithBody(
@@ -60,7 +60,7 @@ class UserLoginAPI(PostAPIView):
         return super().post(request, *args, **kwargs)
 
 
-@auto_extend_schema(http_method=RequestMethod.GET)
+@auto_extend_schema
 class UserFullProfileRetrieveAPI(GetAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_classes = SerializersWithoutBody(

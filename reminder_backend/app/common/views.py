@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from functools import wraps
 from typing import Any, Type
 
 from app.common.types import RequestMethod, SerializerGroup
@@ -78,18 +77,14 @@ class GetAPIView(BaseCustomAPIView, ABC):
         return Response(output_serializer(result).data, status=response_status)
 
 
-def auto_extend_schema(http_method: RequestMethod) -> Any:
-    @wraps(auto_extend_schema)
-    def wrapper(cls: Type[BaseCustomAPIView]) -> Any:
-        lowercase_method_name = http_method.name.lower()
-        method = getattr(cls, lowercase_method_name)
-        method_name = method.__name__
-        serializers: SerializerGroup = cls.serializer_classes
-        decorator = extend_schema(
-            request=serializers.input if http_method != RequestMethod.GET else None,
-            responses={serializers.response_status: serializers.output},
-        )
-        setattr(cls, method_name, decorator(method))
-        return cls
-
-    return wrapper
+def auto_extend_schema(cls: Type[BaseCustomAPIView]) -> Any:
+    http_method = cls.request_method
+    lowercase_method_name = http_method.name.lower()
+    method = getattr(cls, lowercase_method_name)
+    serializers: SerializerGroup = cls.serializer_classes
+    decorator = extend_schema(
+        request=serializers.input if http_method != RequestMethod.GET else None,
+        responses={serializers.response_status: serializers.output},
+    )
+    setattr(cls, method.__name__, decorator(method))
+    return cls

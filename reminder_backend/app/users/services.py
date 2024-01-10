@@ -15,12 +15,12 @@ def create_user(username: str, password: str, **kwargs) -> User:
     user = User.objects.create(username=username, **kwargs)
     user.set_password(password)
     user.save()
+    Token.objects.create(user=user)
     return user
 
 
 def register_user(username: str, password: str, **kwargs) -> User:
     user = create_user(username=username, password=password)
-    Token.objects.create(user=user)
     profile = Profile.objects.create(user=user, **kwargs)
     return profile
 
