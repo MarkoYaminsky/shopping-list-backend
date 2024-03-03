@@ -37,7 +37,6 @@ class PostAPIView(BaseCustomAPIView, ABC):
         post_serializers = self.serializer_classes
         input_serializer = post_serializers.input
         output_serializer = post_serializers.output
-        response_status = post_serializers.response_status
 
         service_data = {}
 
@@ -49,7 +48,7 @@ class PostAPIView(BaseCustomAPIView, ABC):
         result = self.perform_action(**service_data)
 
         if output_serializer is not None:
-            return Response(output_serializer(result).data, status=response_status)
+            return Response(output_serializer(result).data, status=post_serializers.response_status)
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -63,18 +62,66 @@ class GetAPIView(BaseCustomAPIView, ABC):
 
     @abstractmethod
     def get_object(self, *args, **kwargs) -> Any:
+        """Returns a raw object that will be processed in perform_action"""
         pass
 
     def perform_action(self, retrieved_object: Any, *args, **kwargs) -> Any:
+        """Returns a processed object that would be serialized with output serializer."""
         return retrieved_object
 
     def get(self, request: Request, *args, **kwargs) -> Response:
         get_serializers = self.serializer_classes
-        output_serializer = get_serializers.output
-        response_status = get_serializers.response_status
         retrieved_object = self.get_object(*args, **kwargs)
         result = self.perform_action(retrieved_object)
-        return Response(output_serializer(result).data, status=response_status)
+        return Response(get_serializers.output(result).data, status=get_serializers.response_status)
+
+
+class PutAPIView(BaseCustomAPIView, ABC):
+    """
+    Abstract class for most cases of put (update) APIs.
+    """
+
+    request_method = RequestMethod.PUT
+    partial = False
+
+    @abstractmethod
+    def get_object(self, *args, **kwargs) -> Any:
+        """Returns an object or queryset to be updated later in perform_action"""
+        pass
+
+    @abstractmethod
+    def perform_action(self, update_object: Any, **kwargs) -> Any:
+        pass
+
+    def put(self, request: Request, *args, **kwargs) -> Response:
+        put_serializers = self.serializer_classes
+        input_serializer = put_serializers.input
+        output_serializer = put_serializers.output
+        response_status = put_serializers.response_status
+
+        update_object = self.get_object()
+        serializer = input_serializer(update_object, data=request.data, partial=self.partial)
+        serializer.is_valid(raise_exception=True)
+        service_data = serializer.validated_data
+
+        result = self.perform_action(update_object, **service_data)
+
+        if output_serializer is not None:
+            return Response(output_serializer(result).data, status=response_status)
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class PatchAPIView(PutAPIView, ABC):
+    """
+    Abstract class for most cases of patch (partial update) APIs.
+    """
+
+    request_method = RequestMethod.PATCH
+    partial = True
+
+    def patch(self, request: Request, *args, **kwargs) -> Response:
+        return self.put(request, *args, **kwargs)
 
 
 def auto_extend_schema(cls: Type[BaseCustomAPIView]) -> Any:

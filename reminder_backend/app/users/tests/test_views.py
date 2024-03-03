@@ -97,3 +97,29 @@ class TestUserFullProfileRetrieveAPI:
             "gender": user.profile.gender,
             "status": user.profile.status,
         }
+
+
+class TestUserProfileUpdateAPI:
+    ROUTE = "users:my-profile-update"
+    update_data = {"username": "pretty_cow", "display_name": "mooer2003"}
+
+    def test_success(self, api_client):
+        user = UserFactory()
+        profile = ProfileFactory(user=user)
+        api_client.force_authenticate(user)
+
+        response = api_client.patch(reverse(self.ROUTE), data=self.update_data)
+
+        assert response.status_code == status.HTTP_204_NO_CONTENT
+        profile.refresh_from_db()
+        user.refresh_from_db()
+        assert user.username == self.update_data["username"]
+        assert profile.display_name == self.update_data["display_name"]
+
+    def test_phone_number_is_yours(self, authenticated_api_client, user):
+        phone_number = "+380634892933"
+        ProfileFactory(phone_number=phone_number, user=user)
+
+        response = authenticated_api_client.patch(reverse(self.ROUTE), data={"phone_number": phone_number})
+
+        assert response.status_code == status.HTTP_204_NO_CONTENT

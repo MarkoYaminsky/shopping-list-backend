@@ -1,14 +1,19 @@
+from typing import Any
+
 from app.common.types import SerializersWithBody, SerializersWithoutBody
-from app.common.views import GetAPIView, PostAPIView, auto_extend_schema
+from app.common.views import GetAPIView, PatchAPIView, PostAPIView, auto_extend_schema
+from app.users.models import Profile
 from app.users.serializers import (
     UserFullProfileRetrieveOutputSerializer,
     UserLoginInputSerializer,
     UserLoginOutputSerializer,
+    UserProfileUpdateInputSerializer,
     UserRegistrationCheckInputSerializer,
     UserRegistrationInputSerializer,
 )
-from app.users.services import get_user_token, register_user
+from app.users.services import get_user_token, register_user, update_user_profile
 from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -73,3 +78,19 @@ class UserFullProfileRetrieveAPI(GetAPIView):
 
     def get(self, request: Request, *args, **kwargs) -> Response:
         return super().get(request, *args, **kwargs)
+
+
+@auto_extend_schema
+class UserProfileUpdateAPI(PatchAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_classes = SerializersWithBody(input=UserProfileUpdateInputSerializer)
+    partial = True
+
+    def get_object(self, *args, **kwargs) -> Any:
+        return self.request.user
+
+    def perform_action(self, update_object: Any, **kwargs) -> Any:
+        update_user_profile(get_object_or_404(Profile, user=update_object), **kwargs)
+
+    def put(self, request: Request, *args, **kwargs) -> Response:
+        return super().put(request, *args, **kwargs)

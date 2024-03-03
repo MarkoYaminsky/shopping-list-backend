@@ -1,3 +1,4 @@
+from app.common.services import update_instances
 from app.users.exceptions import InvadlidCredentialsError, NoAuthTokenError
 from app.users.models import Profile
 from django.contrib.auth import get_user_model
@@ -40,3 +41,10 @@ def get_user_token(username: str, password: str) -> dict:
         raise NoAuthTokenError(username)
 
     return {"token": user_token.key}
+
+
+def update_user_profile(profile: Profile, **kwargs) -> None:
+    update_instances(
+        instances={profile.user: ("username",), profile: ("display_name", "gender", "status", "phone_number")},
+        data=kwargs,
+    )

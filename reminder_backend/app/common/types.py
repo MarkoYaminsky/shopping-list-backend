@@ -1,6 +1,7 @@
 from enum import Enum, auto
-from typing import NamedTuple, Type
+from typing import NamedTuple, Type, TypeVar
 
+from app.common.models import BaseModel
 from rest_framework import status
 from rest_framework.serializers import Serializer
 
@@ -32,3 +33,5 @@ class SerializersWithBody(NamedTuple):
 
 
 SerializerGroup = SerializersWithoutBody | SerializersWithBody
+
+DjangoModel = TypeVar("DjangoModel", bound=BaseModel)

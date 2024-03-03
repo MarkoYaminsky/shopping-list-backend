@@ -6,6 +6,7 @@ from app.users.services import (
     get_user_by_phone_number,
     get_user_token,
     register_user,
+    update_user_profile,
 )
 from app.users.tests.factories import ProfileFactory, UserFactory
 from django.contrib.auth import get_user_model
@@ -97,3 +98,19 @@ class TestGetUserTokenService:
     def test_invalid_password(self, user_with_password):
         with pytest.raises(InvadlidCredentialsError):
             get_user_token(username=user_with_password.username, password="1")
+
+
+class TestUpdateUserProfileService:
+    update_data = {"username": "deer", "display_name": "dear", "status": "Ding-dong, a witch is dead!"}
+
+    def test_success(self):
+        user = UserFactory()
+        profile = ProfileFactory(user=user)
+
+        update_user_profile(profile, **self.update_data)
+
+        user.refresh_from_db()
+        profile.refresh_from_db()
+        assert user.username == self.update_data["username"]
+        assert profile.display_name == self.update_data["display_name"]
+        assert profile.status == self.update_data["status"]

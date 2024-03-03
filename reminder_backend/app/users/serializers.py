@@ -45,3 +45,23 @@ class UserFullProfileRetrieveOutputSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ("id", "username", "display_name", "phone_number", "gender", "status")
+
+
+class UserProfileUpdateInputSerializer(serializers.ModelSerializer):
+    display_name = serializers.CharField()
+    phone_number = serializers.CharField()
+    gender = serializers.CharField()
+    status = serializers.CharField()
+
+    class Meta:
+        model = User
+        fields = ("username", "display_name", "phone_number", "gender", "status")
+
+    def validate_phone_number(self, phone_number: str) -> None:
+        user_with_existent_phone = get_user_by_phone_number(phone_number)
+        if (
+            phone_number is not None
+            and user_with_existent_phone is not None
+            and user_with_existent_phone != self.instance
+        ):
+            raise UserWithPhoneNumberAlreadyExistsError(phone_number)

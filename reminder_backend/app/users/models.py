@@ -27,6 +27,9 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
     def token(self) -> Optional[Token]:
         return getattr(self, "auth_token", None)
 
+    def __str__(self) -> str:
+        return self.username
+
 
 class Profile(BaseModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -34,3 +37,6 @@ class Profile(BaseModel):
     gender = models.CharField(max_length=20, blank=True)
     status = models.CharField(max_length=128, blank=True)
     phone_number = PhoneNumberField(region="UA", unique=True, blank=True, null=True, default=None)
+
+    def __str__(self) -> str:
+        return f"{self.display_name or self.user.username}'s profile"
