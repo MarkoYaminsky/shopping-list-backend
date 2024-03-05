@@ -7,18 +7,18 @@ services:
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
     build: ./reminder_backend
-    container_name: reminder-backend
+    container_name: shopping-backend
     ports:
       - "8001:8000"
     volumes:
-      - "./reminder_backend/app:/reminder_backend/app"
-      - "./reminder_backend/requirements.txt:/reminder_backend/requirements.txt"
+      - "./shopping_list_backend/app:/reminder_backend/app"
+      - "./shopping_list_backend/requirements.txt:/reminder_backend/requirements.txt"
     depends_on:
       - db
 
   db:
     image: postgres:15
-    container_name: reminder-db
+    container_name: shopping-db
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
