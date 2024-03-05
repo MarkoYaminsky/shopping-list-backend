@@ -11,7 +11,7 @@ env = Env(DEBUG=DEBUG)
 
 Env.read_env(path.join(BASE_DIR, "../../../.env"))
 
-DEVELOPED_APPS = ["app.users"]
+DEVELOPED_APPS = ["app.users", "app.products"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
