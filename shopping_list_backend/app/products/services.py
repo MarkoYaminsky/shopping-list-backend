@@ -1,11 +1,10 @@
 from typing import Optional
 
-from django.contrib.auth import get_user_model
-from django.db.models import QuerySet, F
-
 from app.common.services import update_instance
 from app.products.exceptions import CannotUpdatePositionNumberError
-from app.products.models import ProductList, Product, ProductCategory
+from app.products.models import Product, ProductCategory, ProductList
+from django.contrib.auth import get_user_model
+from django.db.models import F, QuerySet
 
 User = get_user_model()
 
@@ -19,15 +18,20 @@ def get_all_products(*args, **kwargs) -> QuerySet[Product]:
 
 
 def get_all_product_categories(*args, **kwargs) -> QuerySet[ProductCategory]:
-    return ProductCategory.objects.filter(*args, **kwargs)
+    return ProductCategory.objects.filter(*args, **kwargs).order_by("position_number")
 
 
 def create_product_list(author: User, name: str, **kwargs) -> ProductList:
     return ProductList.objects.create(author=author, name=name, **kwargs)
 
 
-def create_product(name: str, product_list: Optional[ProductList] = None, **kwargs) -> ProductList:
-    return Product.objects.create(name=name, list=product_list, **kwargs)
+def create_product(name: str, product_list: Optional[ProductList] = None, **kwargs) -> Product:
+    categories_ids = kwargs.pop("categories_ids", None)
+    product = Product.objects.create(name=name, list=product_list, **kwargs)
+    if categories_ids is not None:
+        categories = get_all_product_categories(id__in=categories_ids)
+        product.categories.set(categories)
+    return product
 
 
 def offset_categories_positions() -> None:

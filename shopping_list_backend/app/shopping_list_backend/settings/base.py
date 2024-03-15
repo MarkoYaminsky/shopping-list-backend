@@ -38,7 +38,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "app.reminder_backend.urls"
+ROOT_URLCONF = "app.shopping_list_backend.urls"
 
 TEMPLATES = [
     {

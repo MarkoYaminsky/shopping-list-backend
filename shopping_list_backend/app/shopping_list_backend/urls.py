@@ -4,6 +4,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView
 
 app_urls = [
     path("users/", include("app.users.urls", namespace="users")),
+    path("products/", include("app.products.urls", namespace="products")),
 ]
 
 management_urls = [
