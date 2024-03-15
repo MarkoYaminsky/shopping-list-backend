@@ -6,13 +6,13 @@ services:
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
-    build: ./reminder_backend
+    build: ./shopping_list_backend
     container_name: shopping-backend
     ports:
       - "8001:8000"
     volumes:
-      - "./shopping_list_backend/app:/reminder_backend/app"
-      - "./shopping_list_backend/requirements.txt:/reminder_backend/requirements.txt"
+      - "./shopping_list_backend/app:/shopping_list_backend/app"
+      - "./shopping_list_backend/requirements.txt:/shopping_list_backend/requirements.txt"
     depends_on:
       - db
 

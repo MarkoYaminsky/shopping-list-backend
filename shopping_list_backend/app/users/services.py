@@ -31,6 +31,7 @@ def get_user_by_phone_number(phone_number: str) -> User:
 
 
 def get_user_token(username: str, password: str) -> dict:
+    # TODO Add case where user with such username does not exist
     user = get_all_users(username=username).first()
 
     if not user.check_password(password):
