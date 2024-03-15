@@ -4,7 +4,7 @@ SECRET_KEY = env.str("SECRET_KEY")
 
 ALLOWED_HOSTS = ["10.0.2.2", "localhost"]
 
-WSGI_APPLICATION = "app.reminder_backend.wsgi.application"
+WSGI_APPLICATION = "app.shopping_list_backend.wsgi.application"
 
 USE_TZ = True
 

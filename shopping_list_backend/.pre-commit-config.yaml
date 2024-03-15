@@ -1,3 +1,4 @@
+files: ^shopping_list_backend/
 fail_fast: true
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -23,4 +24,4 @@ repos:
     rev: 6.1.0
     hooks:
       - id: flake8
-        args: [ '--config=reminder_backend/setup.cfg' ]
+        args: [ '--config=shopping_list_backend/setup.cfg' ]

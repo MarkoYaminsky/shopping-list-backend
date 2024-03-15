@@ -11,7 +11,7 @@ env = Env(DEBUG=DEBUG)
 
 Env.read_env(path.join(BASE_DIR, "../../../.env"))
 
-DEVELOPED_APPS = ["app.users"]
+DEVELOPED_APPS = ["app.users", "app.products"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -38,7 +38,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "app.reminder_backend.urls"
+ROOT_URLCONF = "app.shopping_list_backend.urls"
 
 TEMPLATES = [
     {
