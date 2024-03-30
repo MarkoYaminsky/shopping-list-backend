@@ -13,8 +13,6 @@ class RegistrationCheckFailException implements Exception {
 class InvalidLoginCredentialsException implements Exception {
   static const String message = "Your username or password is incorrect.";
 
-  InvalidLoginCredentialsException();
-
   @override
   String toString() => "InvalidLoginCredentials: $message";
 }

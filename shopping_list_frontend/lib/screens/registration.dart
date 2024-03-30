@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:shopping_list_frontend/services/users.dart';
 
-import '../exceptions/users.dart';
+import 'package:shopping_list_frontend/exceptions/users.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -57,8 +57,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 child: ElevatedButton(
                   onPressed: () async {
                     Map fields = _formKey.currentState!.fields;
+                    UserService userService = UserService();
                     try {
-                      await checkRegistrationErrors(username: fields["username"].value);
+                      await userService.checkRegistrationErrors(username: fields["username"].value);
                     } catch (error) {
                       if (error is RegistrationCheckFailException) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -67,7 +68,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         return;
                       }
                     }
-                    registerUser(
+                    await userService.registerUser(
                       username: fields["username"].value,
                       password: fields["password"].value,
                     );
