@@ -48,7 +48,10 @@ class TestUserRegistrationAPI:
         )
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
-        assert response.json()["phone_number"] == [f"User with phone_number {phone_number} already exists."]
+        assert response.json()["phone_number"] == {
+            "code": "unique-phone-number",
+            "error": f"User with phone_number {phone_number} already exists."
+        }
 
     def test_user_registered(self, api_client):
         response = api_client.post(
