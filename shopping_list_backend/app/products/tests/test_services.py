@@ -1,11 +1,23 @@
 import pytest
-
 from app.products.exceptions import CannotUpdatePositionNumberError
 from app.products.models import Product, ProductCategory, ProductList
-from app.products.services import create_product, offset_categories_positions, create_product_category, \
-    create_product_list, update_product_category, delete_product_list, delete_product, delete_product_category, \
-    add_products_to_list, reposition_categories
-from app.products.tests.factories import ProductCategoryFactory, ProductListFactory, ProductFactory
+from app.products.services import (
+    add_products_to_list,
+    create_product,
+    create_product_category,
+    create_product_list,
+    delete_product,
+    delete_product_category,
+    delete_product_list,
+    offset_categories_positions,
+    reposition_categories,
+    update_product_category,
+)
+from app.products.tests.factories import (
+    ProductCategoryFactory,
+    ProductFactory,
+    ProductListFactory,
+)
 
 pytestmark = pytest.mark.django_db
 
@@ -25,12 +37,13 @@ class TestCreateProductList:
 class TestCreateProduct:
     name = "Honey"
 
-    def test_created(self):
-        product = create_product(name=self.name)
+    def test_created(self, product_category):
+        product = create_product(name=self.name, categories_ids=[product_category.id])
 
         assert Product.objects.count() == 1
         assert Product.objects.first() == product
         assert product.name == self.name
+        assert product.categories.first() == product_category
 
 
 class TestOffsetCategoriesPositions:
