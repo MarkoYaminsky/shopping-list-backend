@@ -65,3 +65,11 @@ class UserProfileUpdateInputSerializer(serializers.ModelSerializer):
             and user_with_existent_phone != self.instance
         ):
             raise UserWithPhoneNumberAlreadyExistsError(phone_number)
+
+
+class UserShortOutputSerializer(serializers.ModelSerializer):
+    display_name = serializers.CharField(source="profile.display_name")
+
+    class Meta:
+        model = User
+        fields = ("id", "username", "display_name")
