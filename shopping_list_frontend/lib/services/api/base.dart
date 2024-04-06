@@ -1,6 +1,8 @@
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+String apiIp = "10.0.2.2";
+
 abstract class BaseRequestSender {
   Future<Map<String, String>> getTokenHeader() async {
     final SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -14,7 +16,7 @@ abstract class BaseRequestSender {
           {Map<String, String>? queryParameters}) async =>
       Uri(
         scheme: "http",
-        host: "10.0.2.2",
+        host: apiIp,
         port: 8001,
         queryParameters: queryParameters,
         path: "$basePath$path",

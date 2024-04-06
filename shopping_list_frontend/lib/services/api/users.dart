@@ -6,7 +6,7 @@ import 'package:shopping_list_frontend/exceptions/users.dart';
 import 'package:shopping_list_frontend/types/users.dart';
 import 'base.dart';
 
-class UserService extends BaseRequestSender {
+class UserApi extends BaseRequestSender {
   @override
   String get basePath => "users/";
 
