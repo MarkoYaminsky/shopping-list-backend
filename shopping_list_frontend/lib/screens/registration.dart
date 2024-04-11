@@ -5,7 +5,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:shopping_list_frontend/services/api/users.dart';
 import 'package:shopping_list_frontend/exceptions/users.dart';
 import 'package:shopping_list_frontend/services/notifiers/popups.dart';
-import 'package:shopping_list_frontend/validators/user_validators.dart';
+import 'package:shopping_list_frontend/validators/user/user_validators.dart';
 import 'package:shopping_list_frontend/cubits/user/tos_failed_attempts_cubit.dart';
 
 const int tosUnconditionalSuccessfulAttempt = 9;
@@ -96,20 +96,20 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               const SizedBox(height: 120),
               FormBuilderTextField(
                 name: "username",
-                validator: usernameValidator,
+                validator: UserValidator.usernameValidator,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 decoration: const InputDecoration(hintText: "Username"),
               ),
               FormBuilderTextField(
                 name: "password",
                 obscureText: true,
-                validator: passwordValidator,
+                validator: UserValidator.passwordValidator,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 decoration: const InputDecoration(hintText: "Password"),
               ),
               FormBuilderTextField(
                 name: "confirmPassword",
-                validator: (value) => confirmPasswordValidator(
+                validator: (value) => UserValidator.confirmPasswordValidator(
                   value,
                   _formKey.currentState?.fields["password"]?.value,
                 ),
