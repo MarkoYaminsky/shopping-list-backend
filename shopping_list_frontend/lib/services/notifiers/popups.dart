@@ -5,8 +5,13 @@ enum SnackBarPopUpType { error, info }
 class SnackBarPopUp {
   String? message;
   BuildContext context;
+  GlobalKey<ScaffoldMessengerState>? rootScaffoldMessengerKey;
 
-  SnackBarPopUp.message({required this.message, required this.context}) {
+  SnackBarPopUp.message({
+    required this.message,
+    required this.context,
+    this.rootScaffoldMessengerKey,
+  }) {
     _triggerSnackBar(
       snackBarColor:
           Theme.of(context).snackBarTheme.backgroundColor ?? Colors.green,
@@ -14,7 +19,11 @@ class SnackBarPopUp {
     );
   }
 
-  SnackBarPopUp.error({required this.message, required this.context}) {
+  SnackBarPopUp.error({
+    required this.message,
+    required this.context,
+    this.rootScaffoldMessengerKey,
+  }) {
     _triggerSnackBar(
       snackBarColor: Theme.of(context).colorScheme.error,
       type: SnackBarPopUpType.error,
@@ -29,13 +38,22 @@ class SnackBarPopUp {
       message ?? (type == SnackBarPopUpType.error ? "Error" : "Success"),
       style: const TextStyle(color: Colors.white),
     );
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: shownContent,
-        backgroundColor: snackBarColor,
-        duration: const Duration(milliseconds: 2500),
-      ),
-    );
+    try {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: shownContent,
+          backgroundColor: snackBarColor,
+          duration: const Duration(milliseconds: 2500),
+        ),
+      );
+    } catch (_) {
+      rootScaffoldMessengerKey?.currentState?.showSnackBar(
+        SnackBar(
+          content: shownContent,
+          backgroundColor: snackBarColor,
+          duration: const Duration(milliseconds: 2500),
+        ),
+      );
+    }
   }
 }
