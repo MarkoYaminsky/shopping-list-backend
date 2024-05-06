@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping_list_frontend/cubits/user/user_cubit.dart';
 import 'package:shopping_list_frontend/screens/login.dart';
-import 'package:shopping_list_frontend/services/lifecycle/navigator.dart';
 
 import 'home.dart';
 

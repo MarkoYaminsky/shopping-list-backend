@@ -4,6 +4,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopping_list_frontend/cubits/general/route_cubit.dart';
 import 'package:shopping_list_frontend/cubits/user/login_cubit.dart';
+import 'package:shopping_list_frontend/cubits/user/user_cubit.dart';
 
 import 'package:shopping_list_frontend/exceptions/users.dart';
 import 'package:shopping_list_frontend/services/notifiers/popups.dart';
@@ -15,6 +16,7 @@ class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
 
   final _formKey = GlobalKey<FormBuilderState>();
+  final userCubit = UserCubit();
 
   Future<void> _submitForm(BuildContext context) async {
     var currentState = _formKey.currentState!;
@@ -57,7 +59,7 @@ class LoginScreen extends StatelessWidget {
               context: context,
               message: state.message,
             );
-            appNavigator.pushReplacementNamed(AppRoute.home);
+            appNavigator.pushReplacementNamed(AppRoute.loading);
           }
         },
         builder: (context, state) {

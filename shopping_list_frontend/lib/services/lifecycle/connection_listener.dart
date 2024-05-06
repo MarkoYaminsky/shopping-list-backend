@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping_list_frontend/cubits/general/internet_connection_cubit.dart';
 import 'package:shopping_list_frontend/cubits/general/route_cubit.dart';
-import 'package:shopping_list_frontend/services/lifecycle/navigator.dart';
 
 import 'package:shopping_list_frontend/services/notifiers/popups.dart';
 

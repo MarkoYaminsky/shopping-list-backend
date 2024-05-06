@@ -5,6 +5,7 @@ enum AppRoute {
   login,
   home,
   noConnection,
+  loading,
 }
 
 extension ValueExtension on AppRoute {
@@ -14,6 +15,7 @@ extension ValueExtension on AppRoute {
       case AppRoute.login: return "/login/";
       case AppRoute.home: return "/home/";
       case AppRoute.noConnection: return "/no-connection/";
+      case AppRoute.loading: return "/loading/";
     }
   }
 }

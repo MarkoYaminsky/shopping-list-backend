@@ -1,6 +1,5 @@
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shopping_list_frontend/exceptions/general.dart';
 import 'package:shopping_list_frontend/services/api/connectivity.dart';
 
 import 'package:shopping_list_frontend/cubits/general/internet_connection_cubit.dart';

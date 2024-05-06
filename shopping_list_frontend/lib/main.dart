@@ -66,6 +66,7 @@ class App extends StatelessWidget {
             AppRoute.login.path: (context) => LoginScreen(),
             AppRoute.noConnection.path: (context) => const NoConnectionScreen(),
             AppRoute.home.path: (context) => const HomeScreen(),
+            AppRoute.loading.path: (context) => const LoadingScreen()
           },
         ),
       ),
