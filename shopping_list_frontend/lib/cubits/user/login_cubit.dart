@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopping_list_frontend/services/api/users.dart';
 import 'package:shopping_list_frontend/types/users.dart';
 import 'package:shopping_list_frontend/exceptions/users.dart';
@@ -31,6 +32,8 @@ class LoginCubit extends Cubit<LoginState> {
       final loginOutput =
           await userApi.loginUser(username: username, password: password);
       emit(LoginSuccessful("You have logged in as $username."));
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      preferences.setString("token", loginOutput.token);
       return loginOutput;
     } on InvalidLoginCredentialsException catch (_) {
       emit(LoginFailed());

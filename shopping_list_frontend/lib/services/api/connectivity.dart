@@ -46,13 +46,4 @@ class ConnectivityCheck {
   void listen() {
     Connectivity().onConnectivityChanged.listen(_triggerByCheckResults);
   }
-
-  static Future<bool> checkInternetIsConnected() async {
-    var connectivityResults = await Connectivity().checkConnectivity();
-    if ((connectivityResults.contains(ConnectivityResult.mobile) ||
-        connectivityResults.contains(ConnectivityResult.wifi))) {
-      return true;
-    }
-    return false;
-  }
 }

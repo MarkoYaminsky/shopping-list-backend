@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping_list_frontend/exceptions/users.dart';
-
-import '../../services/api/users.dart';
+import 'package:shopping_list_frontend/services/api/users.dart';
 
 abstract class RegistrationStatus {}
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopping_list_frontend/cubits/general/route_cubit.dart';
 import 'package:shopping_list_frontend/cubits/user/login_cubit.dart';
 import 'package:shopping_list_frontend/cubits/user/user_cubit.dart';
@@ -24,14 +23,10 @@ class LoginScreen extends StatelessWidget {
       return;
     }
     Map fields = currentState.fields;
-    final response = await context.read<LoginCubit>().login(
+    await context.read<LoginCubit>().login(
           username: fields["username"].value,
           password: fields["password"].value,
         );
-    if (response != null) {
-      SharedPreferences preferences = await SharedPreferences.getInstance();
-      preferences.setString("token", response.token);
-    }
   }
 
   @override

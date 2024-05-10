@@ -39,7 +39,7 @@ class RegistrationScreen extends StatelessWidget {
   }
 
   bool _validateForm(BuildContext context) {
-    bool isFormValid = _formKey.currentState!.validate();
+    bool isFormValid = _formKey.currentState?.validate() ?? false;
     if (!isFormValid) return false;
     return _validateTermsOfService(context);
   }
