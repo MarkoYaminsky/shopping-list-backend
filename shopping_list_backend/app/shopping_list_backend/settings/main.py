@@ -2,7 +2,7 @@ from .base import *
 
 SECRET_KEY = env.str("SECRET_KEY")
 
-ALLOWED_HOSTS = ["10.0.2.2", "localhost"]
+ALLOWED_HOSTS = ["*"]
 
 WSGI_APPLICATION = "app.shopping_list_backend.wsgi.application"
 
